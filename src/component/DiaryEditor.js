@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react'
 
-const DiaryEditor = () => {
+const DiaryEditor = ({onCreate}) => {
 
     const authorInput = useRef();
+    const contentInput = useRef();
+
     const [state, setState] = useState({
         author: "",
         content: "",
@@ -18,17 +20,21 @@ const DiaryEditor = () => {
 
     const handleSubmit = () => {
         if (state.author.length < 1) {
-            //focus
             authorInput.current.focus();
             return;
         }
         if (state.content.length < 5 ) {
-            //focus
+            contentInput.current.focus();            
             return;
         }
 
-        console.log(state);
+        onCreate(state.author, state.content, state.emotion);
         alert("저장 성공");
+        setState({
+            author: "",
+            content: "",
+            emotion: 1,
+        })
     }
 
   return (
@@ -44,6 +50,7 @@ const DiaryEditor = () => {
         </div>
         <div>
             <textarea
+                ref={contentInput}
                 name='content'
                 value={state.content}
                 onChange={handleChangeState}
